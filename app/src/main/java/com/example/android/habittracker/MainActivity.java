@@ -1,14 +1,11 @@
 package com.example.android.habittracker;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import com.example.android.habittracker.data.HabitContract.HabitEntry;
 import com.example.android.habittracker.data.HabitDbHelper;
@@ -34,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
      * Temporary helper method to display information in the onscreen TextView about the state of
      * the habits database.
      */
-    private void displayDatabaseInfo() {
+    private Cursor displayDatabaseInfo() {
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String[] projection = { HabitEntry._ID, HabitEntry.Column_Habit_Name,HabitEntry.Column_Habit_Description,
+        String[] projection = {HabitEntry._ID, HabitEntry.Column_Habit_Name, HabitEntry.Column_Habit_Description,
                 HabitEntry.Column_Habit_Due};
 
         Cursor cursor = db.query(HabitEntry.Table_Name, projection, null, null, null, null, null);
@@ -48,19 +45,18 @@ public class MainActivity extends AppCompatActivity {
             TextView displayView = (TextView) findViewById(R.id.text_view_habit);
             displayView.setText("This list contains " + cursor.getCount() + "Habits.\n\n");
             displayView.append(HabitEntry._ID + " - " + HabitEntry.Column_Habit_Name + " - " +
-                    HabitEntry.Column_Habit_Description +" - " +HabitEntry.Column_Habit_Due +"\n");
+                    HabitEntry.Column_Habit_Description + " - " + HabitEntry.Column_Habit_Due + "\n");
 
             int idColumnIndex = cursor.getColumnIndex(HabitEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(HabitEntry.Column_Habit_Name);
             int descColumnIndex = cursor.getColumnIndex(HabitEntry.Column_Habit_Description);
             int dueDateColumnIndex = cursor.getColumnIndex(HabitEntry.Column_Habit_Due);
 
-            while(cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 int currentId = cursor.getInt(idColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
                 String currentDesc = cursor.getString(descColumnIndex);
                 int currentDueDate = cursor.getInt(dueDateColumnIndex);
-
 
 
                 displayView.append(("\n" + currentId + " - " + currentName + " - " + currentDesc + " - "
@@ -71,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
             // resources and makes it invalid.
             cursor.close();
         }
+        return cursor;
     }
+
     private void insertHabit(){
 
 

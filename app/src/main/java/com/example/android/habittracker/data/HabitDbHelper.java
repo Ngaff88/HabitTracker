@@ -19,6 +19,7 @@ public class HabitDbHelper extends SQLiteOpenHelper {
         super (context,DATABASE_NAME,null,DATABASE_VERSION);
     }
 
+    @Override
     public void onCreate(SQLiteDatabase db){
         String SQL_CREATE_HABITS_TABLE =  "CREATE TABLE "+HabitEntry.Table_Name + "("+
                 HabitEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
@@ -31,7 +32,9 @@ public class HabitDbHelper extends SQLiteOpenHelper {
     public void onUpgrade (SQLiteDatabase db, int oldVerison, int newVersion){
 
         onCreate(db);
+
     }
+    @Override
     public void onDowngrade (SQLiteDatabase db, int oldVerison, int newVersion){
         onUpgrade(db,oldVerison,newVersion);
     }
